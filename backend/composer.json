@@ -1,0 +1,17 @@
+{
+    "name": "acer/backend",
+    "autoload": {
+        "psr-4": {
+            "Acer\\Backend\\": "src/"
+        }
+    },
+    "authors": [
+        {
+            "name": "Artem",
+            "email": "vip.artem4567@mail.ru"
+        }
+    ],
+    "require": {
+        "vlucas/phpdotenv": "^5.6"
+    }
+}
