@@ -11,7 +11,6 @@ class DataBase {
     if(self::$pdo === null){
         $dotenv = Dotenv::createImmutable(__DIR__ . "../../");
         $dotenv->load();
-
         // ПОЛУЧЕНИЕ ДАННЫЗ ИЗ .ENV
         $host = $_ENV["DB_HOST"];
         $db = $_ENV["DB_NAME"];
@@ -21,9 +20,10 @@ class DataBase {
        $dsn = "mysql:host=$host;dbname-$db;charset=utf8mb4";
 
        self::$pdo = new PDO($dsn, $user, $pass,[
+           // ОБРАБОТКА ОШИБОК TRY CATCH
            PDO::ATTR_ERRMODE => PDO::ERRMODE_EXCEPTION,
-           PDO::ATTR_DEFAULT_FETCH_MODE => PDO::FETCH_ASSOC
            // РЕЖИМ ВЫБОРКИ ДАННЫХ ИЗ MYSQL
+           PDO::ATTR_DEFAULT_FETCH_MODE => PDO::FETCH_ASSOC
        ]);
     }
      return self::$pdo;
