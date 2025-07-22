@@ -15,7 +15,7 @@ class Router {
     {
         $this->routes[$method][$path] = $callback;
     }
-    private function dispatch(string $uri, string $method)
+    public function dispatch(string $uri, string $method)
     {
         $uri =  rtrim($uri, '/');
         // проверка а есть ли вообще маршрут
