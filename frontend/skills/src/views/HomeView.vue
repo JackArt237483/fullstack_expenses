@@ -1,11 +1,17 @@
 <template>
   <h1>Расходы</h1>
 
-  <form>
-    <input type="text" placeholder="=Название">
-    <input type="number" placeholder="Расходы">
+  <form @submit.prevent="addExpense">
+    <input v-model="title" type="text" placeholder="=Название">
+    <input v-model.number="amount" type="number" placeholder="Расходы">
     <button>Нажми</button>
   </form>
+
+  <ul>
+    <li v-for="e in expenses" :key="e.id">
+      {{ e.title}} - {{e.amount}} руб
+    </li>
+  </ul>
 </template>
 
 <script>
@@ -20,11 +26,19 @@
     const res = await fetch('/expenses');
     expenses.value = await res.json()
   }
-  const addExpenses = async () => {
+  const addExpense = async () => {
     await fetch("/expenses",{
       method: "POST",
       headers: "Content-type: application/json",
       body: JSON.stringify({"title": title.value , 'amount': amount.value})
     })
   }
+  // очищение всех необходмивых данных опсле отправки на сервак
+  title.value = ''
+  amount.value = 0
+  // функция обновляет действие после расходов
+  fetchExpenses();
+  // хук жизненого цикла
+  // при загрузки страницы получаем полный список расходов
+  onMounted(fetchExpenses)
 </script>

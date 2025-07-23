@@ -2,7 +2,7 @@
     "name": "acer/backend",
     "autoload": {
         "psr-4": {
-            "Acer\\Backend\\": "src/"
+            "App\\": "src/"
         }
     },
     "authors": [

@@ -33,7 +33,7 @@ class ComposerStaticInit3c9b164838f0c641b8333b3d687341ae
         ),
         'A' => 
         array (
-            'Acer\\Backend\\' => 13,
+            'App\\' => 4,
         ),
     );
 
@@ -62,7 +62,7 @@ class ComposerStaticInit3c9b164838f0c641b8333b3d687341ae
         array (
             0 => __DIR__ . '/..' . '/vlucas/phpdotenv/src',
         ),
-        'Acer\\Backend\\' => 
+        'App\\' => 
         array (
             0 => __DIR__ . '/../..' . '/src',
         ),

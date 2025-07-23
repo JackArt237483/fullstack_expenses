@@ -3,7 +3,7 @@ namespace App\Controllers;
 
 use App\Services\Expense;
 
-class ExpenseContrller{
+class ExpenseController{
     // get запрос
     public function index(){
         $expense = Expense::all();
