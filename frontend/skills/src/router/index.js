@@ -17,17 +17,6 @@ const router = createRouter({
       name: 'about',
       // ленивый импорт — создаст отдельный файл
       component: () => import('../views/HomeView.vue')
-    },
-    {
-      path: '/expenses',
-      name: 'expenses',
-      component: () => import('../views/ExpensesView.vue')
-    },
-    // 404 fallback (опционально)
-    {
-      path: '/:pathMatch(.*)*',
-      name: 'not-found',
-      component: () => import('../views/NotFound.vue')
     }
   ]
 })
