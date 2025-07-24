@@ -9,7 +9,7 @@ class DataBase {
  public static function Connection ():PDO
  {
     if(self::$pdo === null){
-        $dotenv = Dotenv::createImmutable(__DIR__ . "../../");
+        $dotenv = Dotenv::createImmutable(__DIR__ . "/../../");
         $dotenv->load();
         // ПОЛУЧЕНИЕ ДАННЫЗ ИЗ .ENV
         $host = $_ENV["DB_HOST"];
@@ -17,7 +17,7 @@ class DataBase {
         $user = $_ENV["DB_USER"];
         $pass = $_ENV["DB_PASS"];
         //СОЗДАНИЕ ПОДКЛЮБЧЕНИЯ
-       $dsn = "mysql:host=$host;dbname-$db;charset=utf8mb4";
+       $dsn = "mysql:host=$host;dbname=$db;charset=utf8mb4";
 
        self::$pdo = new PDO($dsn, $user, $pass,[
            // ОБРАБОТКА ОШИБОК TRY CATCH

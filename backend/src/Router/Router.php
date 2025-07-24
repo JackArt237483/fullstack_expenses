@@ -22,7 +22,7 @@
             // проверка а есть ли вообще маршрут
             $callback = $this->routes[$method][$uri] ?? null;
             // проверка на путь
-            if($callback){
+            if(!$callback){
                 http_response_code(404);
                 echo json_encode(['error' => 'Not right route']);
                 return;

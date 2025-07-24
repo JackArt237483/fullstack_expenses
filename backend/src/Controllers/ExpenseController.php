@@ -1,7 +1,7 @@
 <?php
 namespace App\Controllers;
 
-use App\Services\Expense;
+use App\Models\Expense;
 
 class ExpenseController{
     // get запрос

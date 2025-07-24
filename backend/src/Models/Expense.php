@@ -1,15 +1,14 @@
 <?php
-namespace App\Services;
+namespace App\Models;
 
 use App\Services\DataBase;
-use PDO;
 
 class Expense{
     // функция бля возрата всех рассходов с таблиц
     public static function all():array{
         $pdo = DataBase::Connection();
         // фильтрация по дате создвания
-        $stmt = $pdo->query('SELECT * FROM expense ORDER BUY created_at DESC');
+        $stmt = $pdo->query('SELECT * FROM expenses ORDER BY created_at DESC');
         // возрат всех трат
         return $stmt->fetchAll();
     }
@@ -17,7 +16,7 @@ class Expense{
     public static function create(string $title,float $amount):bool
     {
         $pdo = DataBase::Connection();
-        $stmt = $pdo->prepare('INSERT INTO expense (title,amount) VALUES(:title,:amount)');
+        $stmt = $pdo->prepare('INSERT INTO expenses (title,amount) VALUES(:title,:amount)');
         return $stmt->execute([
             ':title' => $title,
             ':amount' => $amount
