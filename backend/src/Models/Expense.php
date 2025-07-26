@@ -22,5 +22,23 @@ class Expense{
             ':amount' => $amount
         ]);
     }
-
+    // функция удаления расходов из таблицы
+    public static function delete(int $id):bool
+    {
+        $pdo = DataBase::Connection();
+        $stmt = $pdo->prepare('DELETE FROM expenses WHERE id = :id');
+        return $stmt->execute([
+            ':id' => $id
+        ]);
+    }
+    // функция обновления расходов из таблицы
+    public static function update(int $id,string $title, float $amount):bool{
+        $pdo = DataBase::Connection();
+        $stmt = $pdo->prepare("UPDATE expenses SET title = :title,amount = :amount WHERE id = :id");
+        $stmt->execute([
+            "id" => $id,
+            "title" => $title,
+            "amount" => $amount
+        ]);
+    }
 }

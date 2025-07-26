@@ -19,9 +19,13 @@
     // регистрация маршрутов
     $router->get('/expenses', fn() =>$controller->index());
     $router->post('/expenses', fn() => $controller->store());
+    $router->delete('/expenses/(\d+)/delete', fn() => $controller->delete());
+    $router->put('/expenses/(\d+)/update', fn() => $controller->update());
+
+
     // получение путей и разбивка из на части без параметров
-    $uri = parse_url($_SERVER['REQUEST_URI'] ?? '/', PHP_URL_PATH) ?? '/';
-    $method = $_SERVER['REQUEST_METHOD'] ?? 'GET';
+    $uri = parse_url($_SERVER['REQUEST_URI'], PHP_URL_PATH) ?? '/';
+    $method = $_SERVER['REQUEST_METHOD'] ;
     $router->dispatch($uri, $method);
 
 ?>

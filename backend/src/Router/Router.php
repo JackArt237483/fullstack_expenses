@@ -10,6 +10,13 @@
         public function post(string $path, callable $callback){
             $this->AddRoute('POST', $path, $callback);
         }
+        public function put(string $path, callable $callback){
+            $this->AddRoute('PUT', $path, $callback);
+        }
+        public function delete(string $path, callable $callback)
+        {
+            $this->AddRoute('DELETE', $path, $callback);
+        }
         // функция дял путей
         private function AddRoute( string $method, string $path, callable $callback)
         {

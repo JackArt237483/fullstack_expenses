@@ -26,4 +26,28 @@ class ExpenseController{
         // ПРЕОБРАЗОВАНИЯ В JSON
         echo json_encode(['status' => $success ? 'success' : 'error']);
     }
+    // delete запрос
+    public function delete($id)
+    {
+        if(Expense::delete($id)){
+            echo json_encode(['status' => 'success']);
+        } else{
+            http_response_code(404);
+            echo json_encode(['error' => 'error man']);
+        }
+    }
+    // put запрос
+    public function update($id)
+    {
+        // метод получение данных из инпутов
+        $data = json_decode(file_get_contents("php://input"),true);
+        // валидация запроса проверка JSON
+        if(!isset($data['title'],$data['amount'])){
+            http_response_code(404);
+            echo json_encode(['error' => 'just mistake man']);
+            return;
+        }
+        $success = Expense::update($id,$data['title'],(float)$data['amount']);
+        echo json_encode(['status' => $success ? 'success' : 'error']);
+    }
 }
