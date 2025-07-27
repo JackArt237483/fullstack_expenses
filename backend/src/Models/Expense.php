@@ -32,7 +32,8 @@ class Expense{
         ]);
     }
     // функция обновления расходов из таблицы
-    public static function update(int $id,string $title, float $amount):bool{
+    public static function update(int $id,string $title, float $amount) 
+    {
         $pdo = DataBase::Connection();
         $stmt = $pdo->prepare("UPDATE expenses SET title = :title,amount = :amount WHERE id = :id");
         $stmt->execute([

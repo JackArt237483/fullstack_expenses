@@ -21,20 +21,33 @@
         private function AddRoute( string $method, string $path, callable $callback)
         {
             $path = rtrim($path, '/');
-            $this->routes[$method][$path] = $callback;
+            $this->routes[$method][] = [
+                "pattern" => preg_replace('#\{(\w+)\}#','(?P<id>[^/]+)',$path),
+                "callback" => $callback
+            ];
         }
         public function dispatch(string $uri, string $method)
         {
             $uri =  rtrim($uri, '/');
             // проверка а есть ли вообще маршрут
-            $callback = $this->routes[$method][$uri] ?? null;
-            // проверка на путь
-            if(!$callback){
-                http_response_code(404);
-                echo json_encode(['error' => 'Not right route']);
-                return;
+            $routes = $this->routes[$method] ?? [];
+            // перебор всех путей через цикл
+            foreach($routes as $route) {
+                // проверка на URI c помощью регулярок
+                $pattern = "#^". $route["pattern"]."$#";
+                // проверка на совпвадение маршрутов с патерном 
+                if(preg_match($pattern,$uri,$matches)){
+                    // ФИЛЬТР МАССИВА ТАК ЧТОБЫ ОСТАЛИСЬ НУЖНЫЕ ДАННЫЕ
+                    $params = array_filter($matches,'is_string',ARRAY_FILTER_USE_KEY);
+                    call_user_func_array($route['callback'],$params);
+                    return;
+                }
             }
-            call_user_func($callback);
-        }
+        
+            
+            http_response_code(404);
+            echo json_encode(['error' => 'Not right route']);
 
+        }
+        
     }

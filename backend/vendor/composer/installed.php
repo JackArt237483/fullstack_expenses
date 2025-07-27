@@ -3,7 +3,7 @@
         'name' => 'acer/backend',
         'pretty_version' => 'dev-master',
         'version' => 'dev-master',
-        'reference' => 'cb2fcadbbf46a1f7702437650f981206cfa7c232',
+        'reference' => 'cde6615ecc204295df6d7edf78745f49780a274c',
         'type' => 'library',
         'install_path' => __DIR__ . '/../../',
         'aliases' => array(),
@@ -13,7 +13,7 @@
         'acer/backend' => array(
             'pretty_version' => 'dev-master',
             'version' => 'dev-master',
-            'reference' => 'cb2fcadbbf46a1f7702437650f981206cfa7c232',
+            'reference' => 'cde6615ecc204295df6d7edf78745f49780a274c',
             'type' => 'library',
             'install_path' => __DIR__ . '/../../',
             'aliases' => array(),
