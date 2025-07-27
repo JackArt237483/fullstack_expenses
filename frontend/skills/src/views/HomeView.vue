@@ -2,8 +2,10 @@
   <h1>Расходы</h1>
 
   <form @submit.prevent="addExpense">
-    <input v-model="title" type="text" placeholder="Название">
-    <input v-model.number="amount" type="number" placeholder="Расходы">
+    <input v-model="title" :class="{error: errorTitle}" type="text" placeholder="Название">
+    <div class="error-message" v-if="errorTitle">{{ errorTitle }}</div>
+    <input v-model.number="amount" :class="{error: errorAmount}" type="number" placeholder="Расходы">
+    <div class="error-message" v-if="errorAmount">{{ errorAmount }}</div>
     <button>Нажми</button>
   </form>
 
@@ -20,6 +22,7 @@
     
     <div v-else>
       {{ e.title}} - {{e.amount}} руб
+        <small>Добавлено: {{ new Date(e.created_at).toLocaleString() }}</small><br>
       <button @click="deleteExpense(e.id)">Delete</button>
       <button @click="startEdit(e)">Edit</button>  
     </div>
@@ -37,6 +40,9 @@
   const editingId = ref(null)
   const editingTitle = ref('')
   const editingAmount = ref(0)
+  // ПЕРЕМЕННЫЕ ДЛЯ ошибок 
+  const errorTitle = ref("")
+  const errorAmount = ref("")
   // ФУНКЦИЯ ДЛЯ ПОЛУЧЕНИЯ ДАННЫХ С БЕКА
   const fetchExpenses = async () => {
     const res = await fetch('http://localhost:8000/expenses');
@@ -44,6 +50,11 @@
   }
   // ФУНКЦИЯ ДЛЯ ДОБАВЛЕНИЯ ЗАПИСЕЙ
   const addExpense = async () => {
+    // ВАЛИДАЦИЯ С ФРОНТА
+    if(!validate()){
+      return
+    } 
+
     await fetch("http://localhost:8000/expenses",{
       method: "POST",
       headers:{
@@ -63,6 +74,20 @@
       method: 'DELETE'
     })
     fetchExpenses()
+  }
+  const validate = () => {
+    errorTitle.value = ""
+    errorAmount.value = ""
+    // проверка на заголовок
+    if(!title.value.trim()){
+      errorTitle.value = "Бро поле заполни must have"
+    }
+    // проверка на значения суммы
+    if(!amount.value || amount.value <= 0){
+      errorAmount.value = "Бо что то веди"
+    }
+    // ЕСЛИ ВСЕ НОРМАЛЬНО
+    return !errorTitle.value && !errorAmount.value
   }
   // ФУНКЦИЯ ДЛЯ РЕДАКТИРВАНИЯ РАСХОДОВ
   const startEdit = (expense) => {

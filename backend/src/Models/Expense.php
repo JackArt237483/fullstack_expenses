@@ -2,6 +2,7 @@
 namespace App\Models;
 
 use App\Services\DataBase;
+use PDO;
 
 class Expense{
     // функция бля возрата всех рассходов с таблиц
@@ -10,7 +11,7 @@ class Expense{
         // фильтрация по дате создвания
         $stmt = $pdo->query('SELECT * FROM expenses ORDER BY created_at DESC');
         // возрат всех трат
-        return $stmt->fetchAll();
+        return $stmt->fetchAll(PDO::FETCH_ASSOC);
     }
     // функция для создания расходов в таблице
     public static function create(string $title,float $amount):bool

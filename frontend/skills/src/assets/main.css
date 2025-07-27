@@ -119,3 +119,15 @@ li button:last-of-type {
   background: linear-gradient(135deg, #f7971e, #ffd200);
   color: #000;
 }
+.error {
+  border: 1px solid red;
+}
+.error-message {
+  color: red;
+  font-size: 12px;
+  margin-bottom: 5px;
+}
+button:disabled {
+  background: #ccc;
+  cursor: not-allowed;
+}

@@ -16,11 +16,16 @@ class ExpenseController{
     {
         // штука которая полчаает из инпута данные
         $data = json_decode(file_get_contents("php://input"),true);
-        if(!isset($data['title'],$data['amount'])){
+        
+        if(!isset($data['title'],$data['amount'])
+            || trim($data['title'] === "" || 
+            (float) $data['amount'] <= 0)
+        ){
             http_response_code(400);
             echo json_encode(['error' => 'error man']);
             return;
-        }
+        } 
+
         // метод создания записи
         $success = Expense::create($data['title'],(float)$data['amount']);
         // ПРЕОБРАЗОВАНИЯ В JSON
