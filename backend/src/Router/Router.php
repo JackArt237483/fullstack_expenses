@@ -22,7 +22,7 @@
         {
             $path = rtrim($path, '/');
             $this->routes[$method][] = [
-                "pattern" => preg_replace('#\{(\w+)\}#','(?P<id>[^/]+)',$path),
+                "pattern" => preg_replace('#\{(\w+)\}#','(?P<$1>[^/]+)',$path),
                 "callback" => $callback
             ];
         }
