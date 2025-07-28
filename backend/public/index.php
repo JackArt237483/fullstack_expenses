@@ -20,11 +20,13 @@ if ($_SERVER['REQUEST_METHOD'] === 'OPTIONS') {
 $router = new Router();
 $controller = new ExpenseController();
 
+
 // Маршруты
 $router->get('/expenses', fn() => $controller->index());
 $router->post('/expenses', fn() => $controller->store());
 $router->delete('/expenses/{id}/delete', fn($id) => $controller->delete($id));
 $router->put('/expenses/{id}/update', fn($id) => $controller->update($id));
+$router->get('/categories', fn() => $controller->index());
 
 // Обработка запроса
 $uri = parse_url($_SERVER['REQUEST_URI'], PHP_URL_PATH) ?? '/';

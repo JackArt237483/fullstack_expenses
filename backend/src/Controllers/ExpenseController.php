@@ -17,7 +17,7 @@ class ExpenseController{
         // штука которая полчаает из инпута данные
         $data = json_decode(file_get_contents("php://input"),true);
         
-        if(!isset($data['title'],$data['amount'])
+        if(!isset($data['title'],$data['amount'],$data['category_id'])
             || trim($data['title'] === "" || 
             (float) $data['amount'] <= 0)
         ){
@@ -27,7 +27,7 @@ class ExpenseController{
         } 
 
         // метод создания записи
-        $success = Expense::create($data['title'],(float)$data['amount']);
+        $success = Expense::create($data['title'],(float)$data['amount'],(int)$data['category_id']);
         // ПРЕОБРАЗОВАНИЯ В JSON
         echo json_encode(['status' => $success ? 'success' : 'error']);
     }
