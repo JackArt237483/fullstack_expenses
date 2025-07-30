@@ -12,7 +12,7 @@ class Expense{
         $stmt = $pdo->query('
         SELECT expenses .*, categories.text AS category_text
         FROM expenses
-        LEFT Join categiries On exopenses.category_id = categories.id
+        LEFT Join categories On expenses.category_id = categories.id
         ORDER BY created_at DESC');
         // возрат всех трат
         return $stmt->fetchAll(PDO::FETCH_ASSOC);

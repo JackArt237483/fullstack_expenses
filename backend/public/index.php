@@ -3,6 +3,7 @@ require __DIR__ . '/../vendor/autoload.php';
 
 use App\Router\Router;
 use App\Controllers\ExpenseController;
+use App\Controllers\CategoryController;
 
 // Заголовки для JSON + CORS
 header("Content-type: application/json");
@@ -19,6 +20,7 @@ if ($_SERVER['REQUEST_METHOD'] === 'OPTIONS') {
 // Роутер и контроллер
 $router = new Router();
 $controller = new ExpenseController();
+$categoryController = new CategoryController();
 
 
 // Маршруты
@@ -26,7 +28,7 @@ $router->get('/expenses', fn() => $controller->index());
 $router->post('/expenses', fn() => $controller->store());
 $router->delete('/expenses/{id}/delete', fn($id) => $controller->delete($id));
 $router->put('/expenses/{id}/update', fn($id) => $controller->update($id));
-$router->get('/categories', fn() => $controller->index());
+$router->get('/categories', fn() => $categoryController->index());
 
 // Обработка запроса
 $uri = parse_url($_SERVER['REQUEST_URI'], PHP_URL_PATH) ?? '/';
