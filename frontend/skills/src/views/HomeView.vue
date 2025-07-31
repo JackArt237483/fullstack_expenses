@@ -6,12 +6,13 @@
     <div class="error-message" v-if="errorTitle">{{ errorTitle ?? "Без категории"}}</div>
     <input v-model.number="amount" :class="{error: errorAmount}" type="number" placeholder="Расходы">
     <div class="error-message" v-if="errorAmount">{{ errorAmount }}</div>
-    <select v-model="selectCategory">
-      <option disabled value="">Выбери категорию</option>
+    <select v-model="selectCategory" :class="{error: errorSelect}">
+      <option value="">🔥 Выбери категорию</option>
       <option v-for="cat in categories" :value="cat.id" :key="cat.id">
-          {{cat.text}}}
+          {{cat.text}}
       </option>
     </select>
+    <div class="error-message" v-if="errorSelect">{{ errorSelect }}</div>
     <button>Нажми</button>
   </form>
 
@@ -27,7 +28,7 @@
 
     <div v-else>
       {{ e.title}}  - {{e.amount}} руб
-      <small>Категория: {{e.category_id}}</small>
+      <small>Категория: {{e.category_text}}</small>
       <small>Добавлено: {{ new Date(e.created_at).toLocaleString() }}</small><br>
       <button @click="deleteExpense(e.id)">Delete</button>
       <button @click="startEdit(e)">Edit</button>
@@ -86,6 +87,7 @@
     // очищение всех необходмивых данных опсле отправки на сервак
     title.value = ''
     amount.value = 0
+    selectCategory.value = ''
     // функция обновляет действие после расходов
     await fetchExpenses();
   }
@@ -108,8 +110,12 @@
     if(!amount.value || amount.value <= 0){
       errorAmount.value = "Бо что то веди"
     }
+    // проверка на категорию
+    if(!selectCategory.value){
+      errorSelect.value = "Брат заполни поля"
+    }
     // ЕСЛИ ВСЕ НОРМАЛЬНО
-    return !errorTitle.value && !errorAmount.value
+    return !errorTitle.value && !errorAmount.value && !errorSelect.value
   }
   // ФУНКЦИЯ ДЛЯ РЕДАКТИРВАНИЯ РАСХОДОВ
   const startEdit = (expense) => {

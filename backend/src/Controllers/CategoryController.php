@@ -8,6 +8,6 @@ class CategoryController
 {
     public function index()
     {
-        return json_encode(Category::all());
+        return print json_encode(Category::all());
     }
 }
