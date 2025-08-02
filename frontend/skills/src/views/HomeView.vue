@@ -1,60 +1,23 @@
 <template>
   <h1>Расходы</h1>
+  <ExpenseForm :categories="categories" @add="addExpense"/>
+  <ExpenseList
+    :expenses="expenses"
+    @delete="deleteExpense"
+    @update="updateExpense"
+  />
 
-  <form @submit.prevent="addExpense">
-    <input v-model="title" :class="{error: errorTitle}" type="text" placeholder="Название">
-    <div class="error-message" v-if="errorTitle">{{ errorTitle ?? "Без категории"}}</div>
-    <input v-model.number="amount" :class="{error: errorAmount}" type="number" placeholder="Расходы">
-    <div class="error-message" v-if="errorAmount">{{ errorAmount }}</div>
-    <select v-model="selectCategory" :class="{error: errorSelect}">
-      <option value="">🔥 Выбери категорию</option>
-      <option v-for="cat in categories" :value="cat.id" :key="cat.id">
-          {{cat.text}}
-      </option>
-    </select>
-    <div class="error-message" v-if="errorSelect">{{ errorSelect }}</div>
-    <button>Нажми</button>
-  </form>
-
-  <ul>
-    <li v-for="e in expenses" :key="e.id">
-
-    <div v-if="editingId === e.id">
-      <input v-model="editingTitle" type="text">
-      <input v-model.number="editingAmount" type="number">
-      <button @click="updateExpense(e.id)">Save</button>
-      <button @click="stopEdit(e)">Cancel</button>
-    </div>
-
-    <div v-else>
-      {{ e.title}}  - {{e.amount}} руб
-      <small>Категория: {{e.category_text}}</small>
-      <small>Добавлено: {{ new Date(e.created_at).toLocaleString() }}</small><br>
-      <button @click="deleteExpense(e.id)">Delete</button>
-      <button @click="startEdit(e)">Edit</button>
-    </div>
-    </li>
-  </ul>
+  
 </template>
 <script setup>
   import {ref,onMounted } from 'vue';
-  import {ssrExportNameKey} from "vite/module-runner";
+  import ExpenseList from '@/components/ExpenseList.vue';
+  import ExpenseForm from '@/components/ExpenseForm.vue';
 
   // ТРИ ПЕРЕМЕННЫЕ
   const expenses = ref([])
-  const title = ref('')
-  const amount = ref(0)
-  // ПЕРЕМЕННЫЕ ДЛЯ РЕАДАКТИРОВАНИЯ
-  const editingId = ref(null)
-  const editingTitle = ref('')
-  const editingAmount = ref(0)
-  // ПЕРЕМЕННЫЕ ДЛЯ ошибок
-  const errorTitle = ref("")
-  const errorAmount = ref("")
-  const errorSelect = ref("")
   // ПЕРМЕННЫЕ ДЛЯ КАТЕГОРИЙ
   const categories = ref([])
-  const selectCategory = ref(null)
   // ФУНКЦИЯ ДЛЯ ПОЛУЧЕНИЯ ДАННЫХ С БЕКА
   const fetchExpenses = async () => {
     const res = await fetch('http://localhost:8000/expenses');
@@ -99,21 +62,6 @@
     fetchExpenses()
   }
   const validate = () => {
-    errorTitle.value = ""
-    errorAmount.value = ""
-    errorSelect.value = ""
-    // проверка на заголовок
-    if(!title.value.trim()){
-      errorTitle.value = "Бро поле заполни must have"
-    }
-    // проверка на значения суммы
-    if(!amount.value || amount.value <= 0){
-      errorAmount.value = "Бо что то веди"
-    }
-    // проверка на категорию
-    if(!selectCategory.value){
-      errorSelect.value = "Брат заполни поля"
-    }
     // ЕСЛИ ВСЕ НОРМАЛЬНО
     return !errorTitle.value && !errorAmount.value && !errorSelect.value
   }
