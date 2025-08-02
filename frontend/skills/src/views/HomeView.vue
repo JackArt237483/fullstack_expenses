@@ -7,7 +7,7 @@
     @update="updateExpense"
   />
 
-  
+
 </template>
 <script setup>
   import {ref,onMounted } from 'vue';
@@ -29,30 +29,14 @@
     categories.value = await res.json();
   }
   // ФУНКЦИЯ ДЛЯ ДОБАВЛЕНИЯ ЗАПИСЕЙ
-  const addExpense = async () => {
-    // ВАЛИДАЦИЯ С ФРОНТА
-    if(!validate()){
-      return
-    }
-
+  const addExpense = async (payload) => {
     await fetch("http://localhost:8000/expenses",{
       method: "POST",
-      headers:{
-        "Content-type": "application/json"
-      },
-      body: JSON.stringify(
-        {
-              "title": title.value ,
-              "amount": amount.value,
-              "category_id": selectCategory.value
-        })
+      headers:{"Content-type": "application/json"},
+      body: JSON.stringify(payload)
     })
-    // очищение всех необходмивых данных опсле отправки на сервак
-    title.value = ''
-    amount.value = 0
-    selectCategory.value = ''
     // функция обновляет действие после расходов
-    await fetchExpenses();
+   fetchExpenses();
   }
   //  ФУНКЦИЯ ДЯЛ УДЛАЕНИЯ ЗАПИСЕЙ
   const deleteExpense = async (id) => {
@@ -61,35 +45,15 @@
     })
     fetchExpenses()
   }
-  const validate = () => {
-    // ЕСЛИ ВСЕ НОРМАЛЬНО
-    return !errorTitle.value && !errorAmount.value && !errorSelect.value
-  }
-  // ФУНКЦИЯ ДЛЯ РЕДАКТИРВАНИЯ РАСХОДОВ
-  const startEdit = (expense) => {
-    editingId.value = expense.id
-    editingTitle.value = expense.title
-    editingAmount.value = expense.amount
-  }
-  // ФУНКЦИЯ ДЛЯ СБРОСА
-  const stopEdit = () => {
-    editingId.value = null
-    editingTitle.value = ''
-    editingAmount.value = 0
-  }
-  // ФУНКЦИЯ ДЛЯ УДАЛЕНИЯ ЗАПИСЕЙ
-  const updateExpense = async (id) => {
+  // ФУНКЦИЯ ДЛЯ ОБНОВЛЕНИ ЗАПИСЕЙ
+  const updateExpense = async ({id,title,amount}) => {
     await fetch(`http://localhost:8000/expenses/${id}/update`,{
       method: "PUT",
       headers: {
         "Content-type": "application/json"
       },
-      body: JSON.stringify({
-        "title": editingTitle.value,
-        "amount": editingAmount.value
-      })
+      body: JSON.stringify({title,amount})
     })
-    stopEdit()
     fetchExpenses()
   }
   // хук жизненого цикла
