@@ -31,6 +31,7 @@ $router->put('/expenses/{id}/update', fn($id) => $controller->update($id));
 $router->get('/categories', fn() => $categoryController->index());
 
 // Обработка запроса
+$prefix = '/train_skills/backend/public';
 $uri = parse_url($_SERVER['REQUEST_URI'], PHP_URL_PATH) ?? '/';
-$method = $_SERVER['REQUEST_METHOD'] ?? 'GET';
-$router->dispatch($uri, $method);
+$uri = str_replace($prefix, '', $uri);
+

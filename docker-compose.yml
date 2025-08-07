@@ -2,34 +2,26 @@ version: '3.8'
 
 services:
   backend:
-    build: ./backend
-    ports:
-      - "8000:8000"
+    build:
+      context: ./backend
+    container_name: php-backend
     volumes:
-      - ./backend:/app
+      - ./backend:/var/www/html
+    ports:
+      - "8000:80"
+    working_dir: /var/www/html
     depends_on:
-      - db
+      - frontend
 
   frontend:
-    build: ./frontend
+    build:
+      context: ./frontend/skills
+    container_name: vue-frontend
     ports:
       - "5173:5173"
     volumes:
-      - ./frontend:/app
-    command: ["npm", "run", "dev"]
+      - ./frontend/skills:/app
+      - /app/node_modules
+    working_dir: /app
+    command: npm run dev -- --host
 
-  db:
-    image: mysql:8.0
-    restart: always
-    environment:
-      MYSQL_ROOT_PASSWORD: root
-      MYSQL_DATABASE: expenses
-      MYSQL_USER: user
-      MYSQL_PASSWORD: pass
-    ports:
-      - "3306:3306"
-    volumes:
-      - dbdata:/var/lib/mysql
-
-volumes:
-  dbdata:

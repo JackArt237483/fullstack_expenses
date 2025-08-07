@@ -17,7 +17,7 @@ export default defineConfig({
   },
   server: {
     proxy: {
-      '/expenses': 'http://localhost:8000'
+      '/expenses': 'http://localhost:8080'
     }
   }
 })
