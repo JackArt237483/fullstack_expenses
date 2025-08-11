@@ -1,27 +1,18 @@
 version: '3.8'
-
 services:
   backend:
-    build:
-      context: ./backend
-    container_name: php-backend
+    build: ./backend
+    ports:
+      - "8080:80"
     volumes:
       - ./backend:/var/www/html
-    ports:
-      - "8000:80"
-    working_dir: /var/www/html
-    depends_on:
-      - frontend
-
   frontend:
-    build:
-      context: ./frontend/skills
-    container_name: vue-frontend
+    build: ./frontend
     ports:
       - "5173:5173"
     volumes:
-      - ./frontend/skills:/app
+      - ./frontend:/app
       - /app/node_modules
-    working_dir: /app
-    command: npm run dev -- --host
+    command: npm run dev
+
 

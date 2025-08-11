@@ -6,7 +6,7 @@ use App\Controllers\ExpenseController;
 use App\Controllers\CategoryController;
 
 // Заголовки для JSON + CORS
-header("Content-type: application/json; charset=utf-8");
+header("Content-type: application/json");
 header("Access-Control-Allow-Origin: *");
 header("Access-Control-Allow-Headers: Content-Type");
 header("Access-Control-Allow-Methods: GET, POST, DELETE, PUT, OPTIONS");
@@ -31,8 +31,7 @@ $router->put('/expenses/{id}/update', fn($id) => $controller->update($id));
 $router->get('/categories', fn() => $categoryController->index());
 
 // Обработка запроса
-$path = parse_url($_SERVER['REQUEST_URI'], PHP_URL_PATH) ?? '/';
-$base = rtrim(str_replace('\\','/', dirname($_SERVER['SCRIPT_NAME'])), '/'); // напр. "" или "/subdir"
-$uri  = '/' . ltrim(substr($path, strlen($base)), '/'); // получится "/expenses" и т.п.
+$prefix = '/train_skills/backend/public';
+$uri = parse_url($_SERVER['REQUEST_URI'], PHP_URL_PATH) ?? '/';
+$uri = str_replace($prefix, '', $uri);
 
-// далее матчишь $uri в роутере
