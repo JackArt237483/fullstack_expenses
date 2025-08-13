@@ -4,6 +4,7 @@ require __DIR__ . '/../vendor/autoload.php';
 use App\Router\Router;
 use App\Controllers\ExpenseController;
 use App\Controllers\CategoryController;
+use App\Controllers\AuthController;
 
 // Заголовки для JSON + CORS
 header("Content-Type: application/json; charset=utf-8");
@@ -21,13 +22,19 @@ if ($_SERVER['REQUEST_METHOD'] === 'OPTIONS') {
 $router = new Router();
 $controller = new ExpenseController();
 $categoryController = new CategoryController();
+$authController = new AuthController();
 
-// Маршруты
+// Эндпоинты расходов
 $router->get('/expenses', fn() => $controller->index());
 $router->post('/expenses', fn() => $controller->store());
 $router->delete('/expenses/{id}/delete', fn($id) => $controller->delete($id));
 $router->put('/expenses/{id}/update', fn($id) => $controller->update($id));
 $router->get('/categories', fn() => $categoryController->index());
+// Эндпоинты маршрутов
+$router->post('/auth/register', fn() => $authController->register());
+$router->post('/auth/login', fn() => $authController->login());
+$router->post('/auth/logout', fn() => $authController->logout());
+$router->get('/auth/check', fn() => $authController->check());
 
 // Определяем URI
 $path = parse_url($_SERVER['REQUEST_URI'], PHP_URL_PATH) ?? '/';

@@ -32,7 +32,7 @@
         public function login(string $email, string $password):array{
             // ПРОВЕРКА ЮЗЕРА С ПАРЛЯМИ И ХЕШАМИ
             $user = User::findByEmail($email);
-            if(!$user || password_verify($password,$user['password'])){
+            if(!$user || !password_verify($password,$user['password'])){
                 return ["error" => "Ну пароль и emaiL левый"];
             }
             // ГЕНКРАЦИЯ ТОКЕНА 

@@ -11,7 +11,7 @@
         // функция создания сессии в базу с жизнеспособностью 30 дней 
         public static function create(string $token, int $user_id){
             $pdo = DataBase::Connection();
-            $stmt = $pdo->prepare('INSER INTO session (token,user_id,expires_at) VALUES (?,?,?)');
+            $stmt = $pdo->prepare('INSERT INTO session (token,user_id,expires_at) VALUES (?,?,?)');
             $stmt->execute([
                 $token,
                 $user_id,
