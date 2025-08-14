@@ -1,9 +1,17 @@
 <script setup>
 
+import Header from "@/components/UI/Header.vue";
+import Footer from "@/components/UI/Footer.vue";
 </script>
 
 <template>
-  <h1>общая обёртка для защищённых страниц</h1>
+  <div>
+    <Header/>
+      <main class="main-container">
+        <router-view/>
+      </main>
+    <Footer/>
+  </div>
 </template>
 
 <style scoped>

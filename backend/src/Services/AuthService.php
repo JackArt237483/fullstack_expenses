@@ -13,7 +13,7 @@
                 return ['error' => 'Бро херня email не валиден'];
             }
             // ПРОВЕРКА ПАРОЛЯ 
-            if(strlen($password) > 8){
+            if(strlen($password) < 8){
                 return ['error' => 'Бро пароль короткий'];
             }
             // ПРОВЕРКА ЮЗЕРА ЗАРЕГАН ОН

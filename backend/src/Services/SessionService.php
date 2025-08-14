@@ -11,7 +11,7 @@
         // функция создания сессии в базу с жизнеспособностью 30 дней 
         public static function create(string $token, int $user_id){
             $pdo = DataBase::Connection();
-            $stmt = $pdo->prepare('INSERT INTO session (token,user_id,expires_at) VALUES (?,?,?)');
+            $stmt = $pdo->prepare('INSERT INTO sessions (token,user_id,expires_at) VALUES (?,?,?)');
             $stmt->execute([
                 $token,
                 $user_id,
@@ -23,7 +23,7 @@
         public static function getUserById(string $token){
             $pdo = DataBase::Connection();
             // ВЫБЕРИ МНЕ ID ЮЗЕРА И ПОДСЬАВЬ ЕГО ТОКЕН И ЕСЛИ ЕГО СЕСССИЯ ЕЩЕ НЕ ИСТЕКЛА 
-            $stmt = $pdo->prepare("SELECT user_id FROM session WHERE token = ? AND expires_at > NOW()");
+            $stmt = $pdo->prepare("SELECT user_id FROM sessions WHERE token = ? AND expires_at > NOW()");
             $stmt->execute([$token]); // подставляет токен в ?
             // ПОЛУЧАЕМ ПЕРВУЮ ЗАПИСЬ В ТАБЛИЦЕ 
             $row = $stmt->fetch();
@@ -32,7 +32,7 @@
         // ФУНКЦИЯ УДЛАЕНИЯ СЕСИИИ И ЮЗЕРА ИЗ БД
         public static function revoke(string $token) {
             $pdo = DataBase::Connection();
-            $stmt = $pdo->prepare('DELETE FROM session WHERE token = ?');
+            $stmt = $pdo->prepare('DELETE FROM sessions WHERE token = ?');
             $stmt->execute([$token]);
         }
     }

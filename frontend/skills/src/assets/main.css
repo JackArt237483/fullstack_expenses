@@ -200,4 +200,50 @@ option {
     font-size: 12px;
   }
 }
+/* Header */
+.header {
+  background-color: rgba(0, 0, 0, 0.3);
+  backdrop-filter: blur(8px);
+  padding: 15px 0;
+  text-align: center;
+  border-bottom: 1px solid rgba(0, 255, 255, 0.2);
+  box-shadow: 0 4px 10px rgba(0, 255, 255, 0.1);
+}
+
+.header h1 {
+  margin: 0;
+  font-size: 1.8rem;
+  color: #00ffe7;
+  text-shadow: 0 0 10px #00ffe7;
+}
+
+.nav {
+  margin-top: 10px;
+  display: flex;
+  justify-content: center;
+  gap: 20px;
+}
+
+.nav a {
+  color: #fff;
+  text-decoration: none;
+  font-weight: bold;
+  transition: all 0.3s ease;
+}
+
+.nav a:hover {
+  color: #00ffe7;
+  text-shadow: 0 0 5px #00ffe7;
+}
+/* Footer */
+.footer {
+  margin-top: 50px;
+  padding: 20px;
+  text-align: center;
+  background-color: rgba(255, 255, 255, 0.03);
+  border-top: 1px solid rgba(0, 255, 255, 0.2);
+  color: #ccc;
+  font-size: 14px;
+  box-shadow: 0 -4px 10px rgba(0, 255, 255, 0.05);
+}
 

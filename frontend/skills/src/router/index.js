@@ -1,24 +1,18 @@
 import { createRouter, createWebHistory } from 'vue-router'
+import HomeView from "@/views/HomeView.vue";
+import LoginPage from "@/views/LoginPage.vue";
+import RegisterPage from "@/views/RegisterPage.vue";
 
-// Импорты компонентов
-import HomeView from '../views/HomeView.vue'
 
-// Создание роутера
+const routes = [
+  { path: '/', component: HomeView },
+  { path: '/login', component: LoginPage },
+  { path: '/register', component: RegisterPage },
+]
+
 const router = createRouter({
-  history: createWebHistory(import.meta.env.BASE_URL),
-  routes: [
-    {
-      path: '/',
-      name: 'home',
-      component: HomeView
-    },
-    {
-      path: '/about',
-      name: 'about',
-      // ленивый импорт — создаст отдельный файл
-      component: () => import('../views/HomeView.vue')
-    }
-  ]
+  history: createWebHistory(),
+  routes
 })
 
 export default router

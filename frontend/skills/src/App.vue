@@ -1,11 +1,10 @@
 <script setup>
-  import HomeView from "../src/views/HomeView.vue"
+  import MainLayout from "@/layouts/MainLayout.vue";
 </script>
 
 <template>
-  <HomeView>
-
-  </HomeView>
+  <MainLayout>
+  </MainLayout>
 </template>
 
 <style scoped>

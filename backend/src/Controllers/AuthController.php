@@ -15,7 +15,7 @@
         public function register() {
             $data = json_decode(file_get_contents('php://input'),true);
             $res = $this->auth->register($data['name'],$data['email'],$data['password']);
-            Response::json($res, isset($res['error']) ? 400 : 201 );      
+            Response::json($res,isset($res['error']) ? 400 : 201);
         }
         // обработка HTTP запросов логина 
         public function login() {
