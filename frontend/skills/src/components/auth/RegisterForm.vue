@@ -18,7 +18,7 @@
         password: password.value
       })
       localStorage.setItem('token',res.data.token)
-      router.push("/");
+      router.push("/login");
     } catch (err) {
       // если сервер вернул ошибку покажи ошибку
       error.value = err.res?.data?.error || 'MEN MISTAKE REGISTRATION'
