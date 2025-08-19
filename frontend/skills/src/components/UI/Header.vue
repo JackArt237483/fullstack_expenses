@@ -6,6 +6,7 @@
         <RouterLink to="/" class="nav-link">Главная</RouterLink>
         <RouterLink to="/login" class="nav-link">Вход</RouterLink>
         <RouterLink to="/register" class="nav-link">Регистрация</RouterLink>
+        <RouterLink to="/home" class="nav-link">Финансы</RouterLink>
       </nav>
     </div>
   </header>
