@@ -6,24 +6,22 @@ export const useAuthStore = defineStore('auth',{
   state: () => ({
     token: localStorage.getItem('token') || null
   }),
+  // state для проверки token то есть есть ли он или нет его в системе
+  getters: () => ({
+    isAntificated: (state) => !!state.token
+  }),
   // действия
   actions: {
-    // метод устанвоки токена при
-    setToken(token){
+    // Метод логина: устанавливает токен в память и localStorage
+    login(token){
       // устанвливаешь токен в state
       this.token = token
       localStorage.setItem('token',token)
     },
-    // после выхода logout сброс состояния
-    clearToken(){
+    // Метод выхода: чистит токен из памяти и localStorage
+    logout(){
       this.token = null;
       localStorage.removeItem('token')
-    },
-    // проверка авторизирован юзер
-    isAntificated(){
-      // то есть простт проверка есть ли юзер или нет
-      return !!this.token
     }
-
   }
 })

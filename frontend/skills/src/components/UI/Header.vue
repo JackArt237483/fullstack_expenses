@@ -2,18 +2,29 @@
   <header class="header">
     <div class="container">
       <h1 class="logo">💰 ФинТрекер</h1>
-      <nav class="nav">
-        <RouterLink to="/" class="nav-link">Главная</RouterLink>
-        <RouterLink to="/login" class="nav-link">Вход</RouterLink>
-        <RouterLink to="/register" class="nav-link">Регистрация</RouterLink>
-        <RouterLink to="/home" class="nav-link">Финансы</RouterLink>
+      <nav v-if="isAuth" class="nav">
+        <RouterLink to="/home" class="nav-link">Главная</RouterLink>
+        <button @click="handleLogout">Выйти</button>
       </nav>
     </div>
   </header>
 </template>
 
 <script setup>
-import { RouterLink } from 'vue-router';
+import {RouterLink, useRouter} from 'vue-router';
+import { useAuthStore } from "../../stores/auth.js";
+// переменная для отслеживания состояния
+import { computed} from "vue";
+// обьект для редиректа юзера
+const router = useRouter();
+// обьект для доступа к методам store для проверки токена
+const auth = useAuthStore()
+// переменная которая будут отслеживать изменения состояния токена
+const isAuth = computed(() => auth.isAntificated)
+const handleLogout = () => {
+  auth.logout()
+  router.push('/')
+}
 </script>
 
 <style scoped>
