@@ -9,6 +9,11 @@ class ExpenseController{
     public function index(){
         // перехват запроса с фронта
         $token = $_SERVER['HTTP_AUTHORIZATION'] ?? null;
+        if(!$token){
+            http_response_code(401);
+            echo json_encode(['error' => 'ha ha user not here']);
+            return;
+        }
         // полчуение id юзера
         $user_id = SessionService::getUserById($token);
         if(!$user_id){

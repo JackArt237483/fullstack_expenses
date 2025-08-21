@@ -18,7 +18,7 @@ export const useAuthStore = defineStore('auth',{
       this.token = token
       localStorage.setItem('token',token)
     },
-    // Метод выхода: чистит токен из памяти и localStorage
+    // Метод выхода: чистит токен из памяти и localStoragew
     logout(){
       this.token = null;
       localStorage.removeItem('token')
