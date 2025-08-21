@@ -20,7 +20,7 @@ const router = useRouter();
 // обьект для доступа к методам store для проверки токена
 const auth = useAuthStore()
 // переменная которая будут отслеживать изменения состояния токена
-const isAuth = computed(() => auth.isAntificated)
+const isAuth = computed(() => auth.isAuthenticated)
 const handleLogout = () => {
   auth.logout()
   router.push('/')

@@ -7,9 +7,9 @@ export const useAuthStore = defineStore('auth',{
     token: localStorage.getItem('token') || null
   }),
   // state для проверки token то есть есть ли он или нет его в системе
-  getters: () => ({
-    isAntificated: (state) => !!state.token
-  }),
+  getters: {
+    isAuthenticated: (state) => !!state.token
+  },
   // действия
   actions: {
     // Метод логина: устанавливает токен в память и localStorage

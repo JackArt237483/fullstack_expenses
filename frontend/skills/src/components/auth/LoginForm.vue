@@ -2,6 +2,7 @@
   import {ref} from "vue";
   import axios from "axios";
   import {useRouter} from "vue-router";
+  import { useAuthStore } from "@/stores/auth.js";
   // перменные дял связки
   // дефолтные значения
   const email = ref('')
@@ -9,6 +10,7 @@
   // установка то что ошибка пока нет
   const error = ref(null)
   const router = useRouter()
+  const auth = useAuthStore()
 
   const login = async () =>{
     try{
@@ -18,8 +20,8 @@
         password: password.value
       })
       // произошел логин пускает юзера
-      localStorage.setItem('token',res.data.token);
-      router.push('/')
+      auth.login(res.data.token)
+      router.push('/home')
     } catch (err){
         error.value = err.res?.data?.error || "MEN MISTAKE LOGIN"
     }

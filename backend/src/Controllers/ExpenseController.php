@@ -2,11 +2,21 @@
 namespace App\Controllers;
 
 use App\Models\Expense;
+use App\Services\SessionService;
 
 class ExpenseController{
     // get запрос
     public function index(){
-        $expense = Expense::all();
+        // перехват запроса с фронта
+        $token = $_SERVER['HTTP_AUTHORIZATION'] ?? null;
+        // полчуение id юзера
+        $user_id = SessionService::getUserById($token);
+        if(!$user_id){
+            http_response_code(401);
+            echo json_encode(['error' => 'ha ha user not here']);
+            return;
+        }
+        $expense = Expense::all($user_id);
         // получаем все записи
         echo json_encode($expense);
         // отправляем все записи в json
@@ -14,9 +24,19 @@ class ExpenseController{
     // post запрос
     public function store()
     {
-        // штука которая полчаает из инпута данные
+        //полчам данные из инпута
         $data = json_decode(file_get_contents("php://input"),true);
-        
+        // поподания запроса с ронта
+        $token = $_SERVER['HTTP_AUTHORIZATION'] ?? null;
+        $user_id = SessionService::getUserById($token);
+
+        if($user_id){
+            http_response_code(400);
+            echo json_encode(['error' => 'ha ha user not here']);
+            return;
+        }
+
+
         if(!isset($data['title'],$data['amount'],$data['category_id'])
             || trim($data['title'] === "" || 
             (float) $data['amount'] <= 0)
@@ -27,7 +47,12 @@ class ExpenseController{
         } 
 
         // метод создания записи
-        $success = Expense::create($data['title'],(float)$data['amount'],(int)$data['category_id']);
+        $success = Expense::create(
+            $data['title'],
+            (float)$data['amount'],
+            (int)$data['category_id'],
+            $user_id
+        );
         // ПРЕОБРАЗОВАНИЯ В JSON
         echo json_encode(['status' => $success ? 'success' : 'error']);
     }
