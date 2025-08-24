@@ -23,7 +23,7 @@ class Expense{
     public static function create(string $title,float $amount,int $category_id,int $user_id):bool
     {
         $pdo = DataBase::Connection();
-        $stmt = $pdo->prepare('INSERT INTO expenses (title,amount,category_id,$user_id) VALUES(:title,:amount,:category_id,:user_id)');
+        $stmt = $pdo->prepare('INSERT INTO expenses (title,amount,category_id,user_id) VALUES(:title,:amount,:category_id,:user_id)');
         return $stmt->execute([
             ':title' => $title,
             ':amount' => $amount,

@@ -1,14 +1,17 @@
 import { useAuthStore } from "@/stores/auth.js";
-// help functions with apiз
+// help functions with api
 export const fetchWithAuth = async (url,options={}) =>{
   const auth = useAuthStore()
 
   // включить все заголовки для запроса
   const headers = {
     ...(options.headers || {}),
-    Authorization: auth.token,
+    Authorization: `Bearer ${auth.token}`,
     'Content-Type': 'application/json'
   }
+
+
+  console.log('fetchWithAuth TOKEN:', auth.token)
   const res = await  fetch(url,{
     ...options,
     headers

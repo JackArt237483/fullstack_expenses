@@ -2,25 +2,24 @@
 import { ref, onMounted } from 'vue';
 import ExpenseList from '@/components/ExpenseList.vue';
 import ExpenseForm from '@/components/ExpenseForm.vue';
+import { fetchWithAuth } from "@/utills/fetchWithAuth.js";
 
 const expenses = ref([]);
 const categories = ref([]);
 const API = "/api"
 
 const fetchExpenses = async () => {
-  const res = await fetch(`${API}/expenses`);
-  if (!res.ok) throw new Error(`Ошибка запроса: ${res.status}`);
-  expenses.value = await res.json();
+  const res = await fetchWithAuth(`${API}/expenses`);
+  expenses.value = res
 };
 
 const fetchCategories = async () => {
-  const res = await fetch(`${API}/categories`);
-  if (!res.ok) throw new Error(`Ошибка запроса: ${res.status}`);
-  categories.value = await res.json();
+  const res = await fetchWithAuth(`${API}/categories`);
+  categories.value = res
 };
 
 const addExpense = async (payload) => {
-  await fetch(`${API}/expenses`, {
+  await fetchWithAuth(`${API}/expenses`, {
     method: "POST",
     headers: { "Content-Type": "application/json" },
     body: JSON.stringify(payload)
@@ -29,12 +28,12 @@ const addExpense = async (payload) => {
 };
 
 const deleteExpense = async (id) => {
-  await fetch(`${API}/expenses/${id}/delete`, { method: "DELETE" });
+  await fetchWithAuth(`${API}/expenses/${id}/delete`, { method: "DELETE" });
   fetchExpenses();
 };
 
 const updateExpense = async ({ id, title, amount }) => {
-  await fetch(`${API}/expenses/${id}/update`, {
+  await fetchWithAuth(`${API}/expenses/${id}/update`, {
     method: "PUT",
     headers: { "Content-Type": "application/json" },
     body: JSON.stringify({ title, amount })

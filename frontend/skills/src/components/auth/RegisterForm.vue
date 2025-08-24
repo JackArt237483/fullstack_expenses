@@ -9,6 +9,7 @@
   const password = ref('')
   const error = ref(null)
   const router = useRouter()
+  const API = '/api'
   // функция регистрации
   const register = async () => {
     try{

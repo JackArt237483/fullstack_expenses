@@ -34,13 +34,12 @@ class ExpenseController{
         // поподания запроса с ронта
         $token = $_SERVER['HTTP_AUTHORIZATION'] ?? null;
         $user_id = SessionService::getUserById($token);
-
-        if($user_id){
+        // Нету ли юзера id проверка
+        if(!$user_id){
             http_response_code(400);
             echo json_encode(['error' => 'ha ha user not here']);
             return;
         }
-
 
         if(!isset($data['title'],$data['amount'],$data['category_id'])
             || trim($data['title'] === "" || 

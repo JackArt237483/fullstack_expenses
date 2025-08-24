@@ -36,7 +36,3 @@
     <button type="submit">Login man</button>
   </form>
 </template>
-
-<style scoped>
-
-</style>
