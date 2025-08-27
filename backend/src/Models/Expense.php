@@ -4,51 +4,14 @@ namespace App\Models;
 use App\Services\DataBase;
 use PDO;
 
+// ОДНА МОДЕЛЬ КОТОРАЯ НИЧЕГО НЕ ДЕЛАЕТ ПРОСТО СУЩЕСТВУЕТ
 class Expense{
-    // функция бля возрата всех рассходов с таблиц
-    public static function all(int $user_id):array{
-        $pdo = DataBase::Connection();
-        // фильтрация по дате создвания
-        $stmt = $pdo->query('
-        SELECT expenses .*, categories.text AS category_text
-        FROM expenses
-        LEFT Join categories On expenses.category_id = categories.id
-        WHERE expenses.user_id = :user_id
-        ORDER BY created_at DESC');
-        $stmt->execute(['user_id' => $user_id]);
-        // возрат всех трат
-        return $stmt->fetchAll(PDO::FETCH_ASSOC);
-    }
-    // функция для создания расходов в таблице
-    public static function create(string $title,float $amount,int $category_id,int $user_id):bool
-    {
-        $pdo = DataBase::Connection();
-        $stmt = $pdo->prepare('INSERT INTO expenses (title,amount,category_id,user_id) VALUES(:title,:amount,:category_id,:user_id)');
-        return $stmt->execute([
-            ':title' => $title,
-            ':amount' => $amount,
-            ':user_id' => $user_id,
-            ':category_id' => $category_id
-        ]);
-    }
-    // функция удаления расходов из таблицы
-    public static function delete(int $id):bool
-    {
-        $pdo = DataBase::Connection();
-        $stmt = $pdo->prepare('DELETE FROM expenses WHERE id = :id');
-        return $stmt->execute([
-            ':id' => $id
-        ]);
-    }
-    // функция обновления расходов из таблицы
-    public static function update(int $id,string $title, float $amount) 
-    {
-        $pdo = DataBase::Connection();
-        $stmt = $pdo->prepare("UPDATE expenses SET title = :title,amount = :amount WHERE id = :id");
-        $stmt->execute([
-            "id" => $id,
-            "title" => $title,
-            "amount" => $amount
-        ]);
-    }
+    public function __construct(
+        public int $id,
+        public string $title,
+        public float $amount,
+        public int $category_id,
+        public int $user_id,
+        public string $created_at
+    ){}
 }

@@ -3,6 +3,8 @@ import { useAuthStore } from "@/stores/auth.js";
 export const fetchWithAuth = async (url,options={}) =>{
   const auth = useAuthStore()
 
+  if (!auth.token) throw new Error('❌ Нет токена');
+
   // включить все заголовки для запроса
   const headers = {
     ...(options.headers || {}),
@@ -10,14 +12,13 @@ export const fetchWithAuth = async (url,options={}) =>{
     'Content-Type': 'application/json'
   }
 
-
-  console.log('fetchWithAuth TOKEN:', auth.token)
-  const res = await  fetch(url,{
+  console.log(`Так смотри токен такой ${auth.token}`)
+  const res = await fetch(url,{
     ...options,
     headers
   })
 
-  if(!res.ok) throw new Error(`Ошибка запроса: ${res.status}`)
+  if (!res.ok) throw new Error(`Ошибка запроса: ${res.status}`)
   // Возвращаешь тело ответа в виде JSON
   return await res.json()
 }

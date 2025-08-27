@@ -2,26 +2,11 @@
 namespace App\Controllers;
 
 use App\Models\Expense;
-use App\Services\SessionService;
 
 class ExpenseController{
     // get запрос
     public function index(){
-        // перехват запроса с фронта
-        $token = $_SERVER['HTTP_AUTHORIZATION'] ?? null;
-        if(!$token){
-            http_response_code(401);
-            echo json_encode(['error' => 'ha ha user not here']);
-            return;
-        }
-        // полчуение id юзера
-        $user_id = SessionService::getUserById($token);
-        if(!$user_id){
-            http_response_code(401);
-            echo json_encode(['error' => 'ha ha user not here']);
-            return;
-        }
-        $expense = Expense::all($user_id);
+        $expense = Expense::all();
         // получаем все записи
         echo json_encode($expense);
         // отправляем все записи в json
@@ -29,34 +14,20 @@ class ExpenseController{
     // post запрос
     public function store()
     {
-        //полчам данные из инпута
+        // штука которая полчаает из инпута данные
         $data = json_decode(file_get_contents("php://input"),true);
-        // поподания запроса с ронта
-        $token = $_SERVER['HTTP_AUTHORIZATION'] ?? null;
-        $user_id = SessionService::getUserById($token);
-        // Нету ли юзера id проверка
-        if(!$user_id){
-            http_response_code(400);
-            echo json_encode(['error' => 'ha ha user not here']);
-            return;
-        }
 
         if(!isset($data['title'],$data['amount'],$data['category_id'])
-            || trim($data['title'] === "" || 
+            || trim($data['title'] === "" ||
             (float) $data['amount'] <= 0)
         ){
             http_response_code(400);
             echo json_encode(['error' => 'error man']);
             return;
-        } 
+        }
 
         // метод создания записи
-        $success = Expense::create(
-            $data['title'],
-            (float)$data['amount'],
-            (int)$data['category_id'],
-            $user_id
-        );
+        $success = Expense::create($data['title'],(float)$data['amount'],(int)$data['category_id']);
         // ПРЕОБРАЗОВАНИЯ В JSON
         echo json_encode(['status' => $success ? 'success' : 'error']);
     }
