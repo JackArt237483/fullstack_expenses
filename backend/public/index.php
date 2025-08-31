@@ -2,6 +2,9 @@
 require __DIR__ . '/../vendor/autoload.php';
 
 use App\Router\Router;
+use App\Services\DataBase;
+use App\Repositories\ExpenseRepository;
+use App\Services\ExpenseServices;
 use App\Controllers\ExpenseController;
 use App\Controllers\CategoryController;
 use App\Controllers\AuthController;
@@ -18,17 +21,22 @@ if ($_SERVER['REQUEST_METHOD'] === 'OPTIONS') {
     exit();
 }
 
+$pdo = DataBase::Connection();
+$expenseRepository = new ExpenseRepository($pdo);
+$expenseService = new ExpenseServices($expenseRepository);
+$expenseController = new ExpenseController($expenseService);
+
 // Роутер и контроллеры
 $router = new Router();
-$controller = new ExpenseController();
 $categoryController = new CategoryController();
 $authController = new AuthController();
 
 // Эндпоинты расходов
-$router->get('/expenses', fn() => $controller->index());
-$router->post('/expenses', fn() => $controller->store());
-$router->delete('/expenses/{id}/delete', fn($id) => $controller->delete($id));
-$router->put('/expenses/{id}/update', fn($id) => $controller->update($id));
+$router->get('/expenses', fn() => $expenseController->index());
+//$router->get('/expenses/{id}', $expenseController->getById($user_id));
+$router->post('/expenses', fn() => $expenseController->store());
+$router->delete('/expenses/{id}/delete', fn($id) => $expenseController->delete($id));
+$router->put('/expenses/{id}/', fn($id) => $expenseController->update($id));
 $router->get('/categories', fn() => $categoryController->index());
 // Эндпоинты маршрутов
 $router->post('/auth/register', fn() => $authController->register());

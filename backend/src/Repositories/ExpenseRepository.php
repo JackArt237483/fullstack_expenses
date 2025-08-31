@@ -64,10 +64,11 @@ class ExpenseRepository{
         ]);
     }
     // функция обновления расходов из таблицы
-    public function update(int $id,string $title, float $amount)
+    public function update(int $id,string $title, float $amount):bool
     {
         $stmt = $this->pdo->prepare("UPDATE expenses SET title = :title,amount = :amount WHERE id = :id");
-        $stmt->execute([
+
+        return $stmt->execute([
             "id" => $id,
             "title" => $title,
             "amount" => $amount

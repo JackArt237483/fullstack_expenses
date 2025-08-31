@@ -6,7 +6,7 @@ class ExpenseController{
     public function __construct(private ExpenseServices $services){}
     // Обрабатывает GET-запрос для получения всех расходов
     public function index(){
-        $expense = $this->services->getAll();
+        $expense = $this->services->getAllExpense();
         // получаем все записи
         echo $this->json($expense);
         // отправляем все записи в json
@@ -35,7 +35,7 @@ class ExpenseController{
 
         $this->json(['status' => 'created'],200);
     }
-    // delete запрос
+    // Обрабатывает Delete-0 запрос для удаление расхода
     public function delete($id)
     {
         $result = $this->services->deleteExpense($id);
@@ -59,8 +59,9 @@ class ExpenseController{
             return;
         }
 
-        $this->json(['status' => 'created']);
+        $this->json(['status' => 'updated']);
     }
+    // Получае JSON-данные из тела HTTP-ЗАПРОСА
     private function jsonInput()
     {
         // штука которая полчаает из инпута данные
