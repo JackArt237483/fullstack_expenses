@@ -1,8 +1,9 @@
 <?php
-namespace App\Repositories;
+namespace App\Interfaces;
 use App\DTO\UserDTO;
+
 // интрейфес дял user
-interface UserRepositoryInterface{
+interface UserInterface{
     // Метод для поиска user по email
     public function findByEmail(string $email): ?UserDTO;
     // Метод для созадния user

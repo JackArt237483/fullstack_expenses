@@ -1,10 +1,19 @@
 <?php
     namespace App\Services;
 
-    use App\Models\User;
-    use App\Services\SessionService;
+    use App\DTO\UserDTO;
+    use App\Repositories\UserRepository;
+    use App\Repositories\SessionRepository;
 
     class AuthService{
+        private UserRepository $userRepo;
+        private SessionRepository $sessionRepo;
+        // СОЗДАТЬ DI ЧТОБЫ ВРУЧНУЮ ВСЕ НЕ СОЗАДВАТЬ
+        public function __construct(UserRepository $userRepo, SessionRepository $sessionRepo)
+        {
+            $this->userRepo = $userRepo;
+            $this->sessionRepo = $sessionRepo;
+        }
         // ФУНКЦИЯ ПРОВЕРКА РЕГИСТРАЦИИ 
         public function register(string $name,string $email,string $password):array 
         {
@@ -17,21 +26,24 @@
                 return ['error' => 'Бро пароль короткий'];
             }
             // ПРОВЕРКА ЮЗЕРА ЗАРЕГАН ОН
-            $registered = User::findByEmail($email);
-            if($registered){
-                return ['error' => 'Ха ха юзера нет'];
-            } 
-            // хеширвоание пароля
-            $hash = password_hash($password,PASSWORD_BCRYPT);
-            User::create($name,$email,$hash);
-
-            // ✅ Теперь всегда что-то вернёт
-            return ["message" => "Бро все зарегался"];
+            if($this->userRepo->findByEmail($email)){
+                return ['error' => 'Бро юзер с таким именем уже существует'];
+            }
+            try {
+                // хеширвоание пароля
+                $hash = password_hash($password,PASSWORD_BCRYPT);
+                $userDTO = new UserDTO($name,$email,$hash);
+                $this->userRepo->create($userDTO);
+                // ✅ Теперь всегда что-то вернёт
+                return ["message" => "Бро все зарегался"];
+            } catch (\PDOException $e){
+                return ['error' => "Ошибка регситрации", $e->getMessage()];
+            }
         }
         // ФУНКИЦЯ ПРОВЕРКА ЛОГИНА 
         public function login(string $email, string $password):array{
             // ПРОВЕРКА ЮЗЕРА С ПАРЛЯМИ И ХЕШАМИ
-            $user = User::findByEmail($email);
+            $user = SessionRepository::findByEmail($email);
             if(!$user || !password_verify($password,$user['password'])){
                 return ["error" => "Ну пароль и emaiL левый"];
             }
