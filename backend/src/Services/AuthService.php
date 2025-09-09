@@ -42,17 +42,21 @@
         }
         // ФУНКИЦЯ ПРОВЕРКА ЛОГИНА 
         public function login(string $email, string $password):array{
-            // ПРОВЕРКА ЮЗЕРА С ПАРЛЯМИ И ХЕШАМИ
-            $user = SessionRepository::findByEmail($email);
-            if(!$user || !password_verify($password,$user['password'])){
-                return ["error" => "Ну пароль и emaiL левый"];
+            try {
+                // ПРОВЕРКА ЮЗЕРА С ПАРЛЯМИ И ХЕШАМИ
+                $user = $this->userRepo::findByEmail($email);
+                if(!$user || !password_verify($password,$user['password'])){
+                    return ["error" => "Ну пароль и email левый и некоректны"];
+                }
+                // ГЕНКРАЦИЯ ТОКЕНА
+                $token = $this->sessionRepo::generateToken();
+                // СОХРАНЕНИЕ ТОКЕНА
+                $this->sessionRepo::create($token, $user->id);
+                // ВОЗРАЩЕНИЕ ТОКЕНА
+                return ['token' => $token];
+            } catch (\PDOException $e){
+                return ['error' => 'Ошибка при создании токена', $e->getMessage()];
             }
-            // ГЕНКРАЦИЯ ТОКЕНА 
-            $token = SessionService::generateToken();
-            // СОХРАНЕНИЕ ТОКЕНА
-            SessionService::create($token, $user['id']);
-            // ВОЗРАЩЕНИЕ ТОКЕНА
-            return ['token' => $token];
         }
         // ФУНКЦИЯ ПРОВЕРКА АТОРИЗАЦИИ
         public function checkAuth(){
@@ -61,11 +65,11 @@
             // ПРОВЕРК ЗАРЕГАН ЛИ ПОЛЬЗОВАТЕЛЬ ИЛИ НЕТ С ЭТИМ ЗАГОЛОВКОМ Authorization
             if(!isset($headers['Authorization'])) return null;
             $token = str_replace('Bearer ','',$headers['Authorization']);
-            return SessionService::getUserById($token);
+            return $this->sessionRepo::getUserByIdToken($token);
         }
         // ФУНКЦИЯ ОКОНЧАНИЕ СЕССИИ
         public function logout(string $token) {
-            SessionService::revoke($token);
+            $this->sessionRepo::revoke($token);
         }
     }
 ?>
