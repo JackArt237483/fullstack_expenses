@@ -9,9 +9,9 @@ use Dotenv\Dotenv;
 use Di\Container;
 use App\Services\DataBase;
 // создается точка входа дял загрузки переменных
-$dontenv = Dotenv::createImmutable(__DIR__);
+$dotenv = Dotenv::createImmutable(__DIR__);
 // загружаем все необходимые переменные с .ENV файла
-$dontenv->load();
+$dotenv->load();
 // конфиг дял подключения
 $dbConfig = [
     'host' => $_ENV['DB_HOST'] ?? '',
@@ -35,4 +35,6 @@ $container->set(AuthService::class, fn($c) => new AuthService(
     $c->get(SessionInterface::class)
 ));
 // Регистрируется сервис ProfileService, который отвечает за логику аутентификации.
-
+$container->set(PrifileService::class, fn($c)=> new \App\Services\ProfileService(
+    
+));

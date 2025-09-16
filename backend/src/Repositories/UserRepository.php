@@ -44,4 +44,20 @@ class UserRepository implements UserInterface
             throw new \RuntimeException("Ошибка при созаднии юзера" . $e->getMessage());
         }
     }
+
+    public function update(UserDTO $user): bool
+    {
+        try {
+            $stmt = $this->pdo->prepare('UPDATE users 
+                                                SET name = :name, email = :email
+                                                Where id = :id');
+            return $stmt->execute([
+                "id" => $user->id,
+                "name" => $user->name,
+                "email" => $user->email
+            ]);
+        } catch (PDOException $e){
+            throw new \RuntimeException("Ошибка при обновления юзера" . $e->getMessage());
+        }
+    }
 }

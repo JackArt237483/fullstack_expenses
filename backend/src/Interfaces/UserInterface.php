@@ -8,4 +8,5 @@ interface UserInterface{
     public function findByEmail(string $email): ?UserDTO;
     // Метод для созадния user
     public function create(UserDTO $user):bool;
+    public function update(UserDTO $user):bool;
 }
