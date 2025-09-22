@@ -8,8 +8,8 @@
     class AuthController{
         private AuthService $auth;
         // ЮЗАЕМ МЕТОДЫ ИЗ AuthService
-        public function __construct(){
-            $this->auth = new AuthService();
+        public function __construct(AuthService $auth){
+            $this->auth = $auth;
         }
         // обработка HTTP запросов регистрации
         public function register() {

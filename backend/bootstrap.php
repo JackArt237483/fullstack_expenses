@@ -1,10 +1,13 @@
 <?php
-// DI контейнер для управлениеям зависимостями
+// Настройка DI контейнер для управлениеям зависимостями
+use App\Controllers\AuthController;
+use App\Controllers\ProfileController;
 use App\Interfaces\SessionInterface;
 use App\Interfaces\UserInterface;
 use App\Repositories\SessionRepository;
 use App\Repositories\UserRepository;
 use App\Services\AuthService;
+use App\Services\ProfileService;
 use Dotenv\Dotenv;
 use Di\Container;
 use App\Services\DataBase;
@@ -23,7 +26,7 @@ $dbConfig = [
 //Импорт контрейнера
 $container = new Container();
 //ОДИН PDO ДЛЯ ВСЕХ ТО ЕСТЬ ЕСЛИ НУЖНО БУДЕТ ВОЗЬМИ ОТСЮДА
-$container->set(PDO::class, function () use ($dbConfig){
+$container->set(PDO::class, function () use ($config){
     return (new DataBase())->Connection($dbConfig);
 });
 // МЕТОДЫ С РЕАЛИЗАЦИЕЙ ИНТРЕЙФЕСОВ И РЕПОЗИТОРИЯ
@@ -34,7 +37,19 @@ $container->set(AuthService::class, fn($c) => new AuthService(
     $c->get(UserInterface::class),
     $c->get(SessionInterface::class)
 ));
-// Регистрируется сервис ProfileService, который отвечает за логику аутентификации.
-$container->set(PrifileService::class, fn($c)=> new \App\Services\ProfileService(
-    
+// Регистрируется сервис ProfileService, который отвечает за логику апдейта профиля.
+$container->set(ProfileService::class, fn($c) => new ProfileService(
+    $c->get(UserInterface::class),
 ));
+// РЕГИСТРАЦИЯ AuthController КОНТРОЛЕРА ДЛЯ DI КОНТЕЙНЕР
+$container->set(AuthController::class, fn($c) => new AuthController(
+  $c->get(AuthService::class)
+));
+// РЕГИСТРАЦИЯ КОНТРОЛЕРОВ ДЛЯ DI КОНТЕЙНЕР
+$container->set(ProfileController::class, fn($c) => new ProfileController(
+    $c->get(ProfileService::class),
+    $c->get(AuthService::class)
+));
+
+return $container;
+
